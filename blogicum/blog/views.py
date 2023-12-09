@@ -1,5 +1,7 @@
-from django.shortcuts import render
 from django.http import Http404
+from django.shortcuts import render
+from itertools import islice
+
 
 posts = [
     {
@@ -44,25 +46,27 @@ posts = [
     },
 ]
 
-reversed_posts = list(reversed(posts))
+posts_data = {}
+for post in posts:
+    posts_data[post['id']] = {
+        k: v for (k, v) in islice(post.items(), 1, None)
+    }
 
 
 def index(request):
-    template = 'blog/index.html'
-    context = {'all_posts': reversed_posts}
-    return render(request, template, context)
+    return render(
+        request, 'blog/index.html', {'all_posts': reversed(posts)}
+    )
 
 
 def post_detail(request, post_id):
-    template = 'blog/detail.html'
-    if not any(post['id'] == post_id for post in posts):
+    if post_id not in posts_data:
         raise Http404('Страницы с данным номером поста не существует')
     else:
-        context = {'post': posts[post_id]}
-        return render(request, template, context)
+        return render(request, 'blog/detail.html', {'post': posts_data[post_id]})
 
 
 def category_posts(request, category_slug):
-    template = 'blog/category.html'
-    context = {'category_slug': category_slug}
-    return render(request, template, context)
+    return render(
+        request, 'blog/category.html', {'category_slug': category_slug}
+    )
