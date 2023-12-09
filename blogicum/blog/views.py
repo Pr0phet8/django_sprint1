@@ -45,9 +45,7 @@ posts = [
     },
 ]
 
-posts_data = {}
-for post in posts:
-    posts_data[post['id']] = post
+posts_data = {post['id']: post for post in posts}
 
 
 def index(request):
@@ -58,11 +56,10 @@ def index(request):
 
 def post_detail(request, post_id):
     if post_id not in posts_data:
-        raise Http404('Страницы с данным номером поста не существует')
-    else:
-        return render(
-            request, 'blog/detail.html', {'post': posts_data[post_id]}
-        )
+        raise Http404(f'Страницы с номером поста {post_id} не существует')
+    return render(
+        request, 'blog/detail.html', {'post': posts_data[post_id]}
+    )
 
 
 def category_posts(request, category_slug):
