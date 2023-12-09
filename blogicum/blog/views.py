@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 posts = [
     {
@@ -52,13 +53,16 @@ def index(request):
     return render(request, template, context)
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
     template = 'blog/detail.html'
-    context = {'post': posts[id]}
-    return render(request, template, context)
+    if not any(post['id'] == post_id for post in posts):
+        raise Http404('Страницы с данным номером поста не существует')
+    else:
+        context = {'post': posts[post_id]}
+        return render(request, template, context)
 
 
 def category_posts(request, category_slug):
     template = 'blog/category.html'
-    context = {'slug': category_slug}
+    context = {'category_slug': category_slug}
     return render(request, template, context)

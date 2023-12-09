@@ -1,8 +1,7 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}
-{{ post.location }}. {{ post.date }}
+  {{ post.location }}. {{ post.date }}
 {% endblock %}
 {% block content %}
   <div class="container py-5">
@@ -17,12 +16,12 @@
         <li>
           Категория: 
           <a href="{% url 'blog:category_posts' 12 %}">
-            not-my-day
+            travel
           </a>
         </li>
       </ul>         
       <p>
-        {{ post.text }}
+        {{ post.text|linebreaksbr }}
       </p>          
     </article>                
   </div>
