@@ -1,6 +1,5 @@
 from django.http import Http404
 from django.shortcuts import render
-from itertools import islice
 
 
 posts = [
@@ -48,9 +47,7 @@ posts = [
 
 posts_data = {}
 for post in posts:
-    posts_data[post['id']] = {
-        k: v for (k, v) in islice(post.items(), 1, None)
-    }
+    posts_data[post['id']] = post
 
 
 def index(request):
