@@ -63,7 +63,9 @@ def post_detail(request, post_id):
     if post_id not in posts_data:
         raise Http404('Страницы с данным номером поста не существует')
     else:
-        return render(request, 'blog/detail.html', {'post': posts_data[post_id]})
+        return render(
+            request, 'blog/detail.html', {'post': posts_data[post_id]}
+        )
 
 
 def category_posts(request, category_slug):
